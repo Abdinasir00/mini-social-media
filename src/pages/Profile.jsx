@@ -6,7 +6,7 @@ import {
   updateUserProfile,
   DeletePost,
   fetchComments,
-} from "../store/Slices/profileSlice";
+} from "../store/slices/profileSlice";
 import { BASE_URL } from "../store/BaseUrl";
 import { Heart, MessageCircle } from "lucide-react";
 
