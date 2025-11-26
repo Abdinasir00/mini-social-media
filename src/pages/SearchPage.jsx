@@ -15,9 +15,11 @@ const SearchPage = () => {
   }, [dispatch, query]);
 
   return (
-    <div className="flex-1 p-8">
+    <div className="flex-1 p-6 md:p-8 min-h-[calc(100vh-5rem)] bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
       <div className="text-center">
-        <h1 className="text-3xl font-bold mb-8 m-2">Discover People</h1>
+        <h1 className="text-3xl font-bold mb-8 m-2 text-gray-900 dark:text-gray-100">
+          Discover People
+        </h1>
       </div>
 
       {/* Search input */}
@@ -28,7 +30,7 @@ const SearchPage = () => {
             placeholder="Search Users..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="rounded-xl shadow-md border w-full pl-10 pr-4 py-3 text-gray-900 dark:text-w"
+            className="rounded-xl shadow-md border border-gray-200 dark:border-gray-700 w-full pl-10 pr-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-900 placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-300"
           />
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
         </div>

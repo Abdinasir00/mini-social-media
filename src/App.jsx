@@ -4,6 +4,7 @@ import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 import { Routes, Route } from "react-router-dom";
 import SearchPage from "./pages/SearchPage";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 
 // import Notification from "./pages/Notification"
@@ -17,7 +18,21 @@ import ProtectedRoute from "./components/auth/ProtectedRoutes";
 
 function App() {
   const { isAuthenticated, status } = useSelector((state) => state.auth);
-  console.log("authenticated", isAuthenticated)
+  const mainClassName = useMemo(
+    () =>
+      [
+        "flex-grow",
+        "px-4",
+        "py-6",
+        "transition-colors",
+        "duration-300",
+        isAuthenticated ? "md:ml-[250px]" : "",
+      ]
+        .filter(Boolean)
+        .join(" "),
+    [isAuthenticated]
+  );
+
   // Loading spinner
   if (status === "loading") {
     return (
@@ -27,12 +42,12 @@ function App() {
     );
   }
   return (
-    <div className="flex flex-col main-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
       <Navbar />
       {/* <Navbar user={currentUser.name} avatar={currentUser.avatar} /> */}
       <div className="flex flex-1">
         {isAuthenticated && <Sidebar />}
-        <main className="flex-grow">
+        <main className={mainClassName}>
          <Routes>
           <Route
             path="/"

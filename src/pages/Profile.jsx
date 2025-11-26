@@ -125,7 +125,7 @@ function Profile() {
     return (
       <div className="flex justify-center items-center pt-40">
         <div className="flex flex-col items-center">
-          <div className="w-13 h-13 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+          <div className="w-12 h-12 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
           <p className="mt-3 text-gray-600 font-medium">Loading posts...</p>
         </div>
       </div>
@@ -166,7 +166,7 @@ function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10 px-4">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-100 flex flex-col items-center py-10 px-4 transition-colors duration-300">
       {/* === PROFILE HEADER === */}
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg rounded-2xl p-6 w-full max-w-7xl h-96 flex flex-col">
         {/* Profile Picture */}
@@ -261,14 +261,16 @@ function Profile() {
 
       {/* === POSTS SECTION === */}
       <div className="mt-10 w-full max-w-3xl">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">My Posts</h3>
+        <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+          My Posts
+        </h3>
 
         {posts?.recentPosts?.length ? (
           <div className="flex flex-col gap-4">
             {posts.recentPosts.map((post) => (
               <div
                 key={post._id}
-                className="p-4 bg-white rounded-lg shadow relative"
+                className="p-4 bg-white dark:bg-gray-900 rounded-lg shadow relative border border-gray-100 dark:border-gray-800 transition-colors duration-300"
               >
                 <div className="flex gap-2 items-center">
                   <img
@@ -277,17 +279,17 @@ function Profile() {
                     className="w-12 h-12 rounded-full object-cover"
                   />
                   <div>
-                    <h1 className="font-semibold">{name}</h1>
-                    <p className="text-gray-500 text-sm">
+                    <h1 className="font-semibold text-gray-900 dark:text-gray-100">{name}</h1>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">
                       <span className="text-gray-400 text-sm"> • </span>
-                      <span className="text-gray-500 text-sm">
+                      <span className="text-gray-500 dark:text-gray-400 text-sm">
                         {timeAgo(post.createdAt)}
                       </span>
                     </p>
                   </div>
                 </div>
 
-                <p className="my-5">{post.text}</p>
+                <p className="my-5 text-gray-800 dark:text-gray-200">{post.text}</p>
 
                 {post.imageUrl && (
                   <img
@@ -303,13 +305,13 @@ function Profile() {
                   </button>
 
                   <button onClick={() => handleComments(post._id)}>
-                    <MessageCircle size={20} />
+                    <MessageCircle size={20} className="text-gray-700 dark:text-gray-200" />
                   </button>
                 </div>
 
                 {/* === COMMENTS === */}
                 {postComments[post._id]?.length > 0 && (
-                  <div className="mt-3 bg-gray-50 p-2 rounded">
+                  <div className="mt-3 bg-gray-50 dark:bg-gray-800 p-2 rounded">
                     {postComments[post._id].map((c) => (
                       <div key={c._id} className="flex items-start gap-2">
                         <img
@@ -317,7 +319,7 @@ function Profile() {
                           alt="comment avatar"
                           className="w-8 h-8 rounded-full object-cover"
                         />
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
                           <strong>{c.user?.name || "Anonymous"}:</strong>{" "}
                           {c.text}
                         </p>
@@ -330,13 +332,13 @@ function Profile() {
                 <div className="absolute top-4 right-4">
                   <button
                     onClick={() => toggleDropdown(post._id)}
-                    className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                    className="px-2 py-1 bg-gray-200 dark:bg-gray-800 rounded hover:bg-gray-300 dark:hover:bg-gray-700"
                   >
                     ...
                   </button>
 
                   {openDropdownId === post._id && (
-                    <ul className="absolute right-0 mt-1 w-32 bg-white border rounded shadow-lg z-10">
+                    <ul className="absolute right-0 mt-1 w-32 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-10">
                       <li
                         onClick={() => handleDeletePost(post._id)}
                         className="px-4 py-2 hover:bg-red-100 cursor-pointer text-red-500"
