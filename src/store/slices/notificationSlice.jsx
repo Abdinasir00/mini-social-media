@@ -19,8 +19,14 @@ export const fetchNotifications = createAsyncThunk(
   "notifications/fetchNotifications",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.get(API_URL, getAuthHeader());
-      return res.data;
+      const res = await axios.get(API_URL, {
+        ...getAuthHeader(),
+        withCredentials: true,
+      });
+      const payload = Array.isArray(res.data)
+        ? res.data
+        : res.data?.notifications ?? res.data?.data ?? [];
+      return payload;
     } catch (error) {
       return rejectWithValue(error.response?.data?.error || "Failed to fetch");
     }
@@ -32,7 +38,14 @@ export const markAllNotificationsRead = createAsyncThunk(
   "notifications/markAllRead",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.put(`${API_URL}/read-all`, {}, getAuthHeader());
+      const res = await axios.put(
+        `${API_URL}/read-all`,
+        {},
+        {
+          ...getAuthHeader(),
+          withCredentials: true,
+        }
+      );
       return res.data.updated_count;
     } catch (error) {
       return rejectWithValue(error.response?.data?.error || "Failed to mark all");

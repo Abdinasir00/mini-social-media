@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadImage, createPost } from "../store/slices/PostSlices";
+import { uploadImage, createPost, fetchPostsWithUsers } from "../store/slices/PostSlices";
 import { Image } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -42,16 +42,20 @@ function CreatePostForm() {
 
     const payload = {
       text,
-      image_url: imageData?.url || "",
+      imageUrl: imageData?.url || "",
       storageId: imageData?.storageId || "",
     };
 
-    await dispatch(createPost(payload));
-
-    setText("");
-    setFile(null);
-    setPreview("");
-    navigate("/home")
+    try {
+      await dispatch(createPost(payload)).unwrap();
+      await dispatch(fetchPostsWithUsers());
+      setText("");
+      setFile(null);
+      setPreview("");
+      navigate("/");
+    } catch (err) {
+      console.error("Failed to create post:", err);
+    }
   };
 
   return (

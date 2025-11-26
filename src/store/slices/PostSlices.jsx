@@ -19,7 +19,7 @@ export const fetchPostsWithUsers = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
 
-      const res = await axios.get(`${BASE_URL}/posts`);
+      const res = await axios.get(`${BASE_URL}/posts`, getAuthHeader());
       
       return res.data;
     } catch (err) {
@@ -35,15 +35,17 @@ export const uploadImage = createAsyncThunk(
   "post/uploadImage",
   async ({ file, type = "post" }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("No token found");
+      const token = localStorage.getItem("authToken");
+      if (!token) throw new Error("No authentication token found");
 
       const formData = new FormData();
       formData.append("image", file);
       formData.append("type", type);
 
       const response = await axios.post(`${BASE_URL}/upload/image`, formData, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       return response.data;
@@ -275,7 +277,11 @@ const postSlice = createSlice({
       })
       .addCase(createPost.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.posts.unshift(action.payload);
+        if (Array.isArray(action.payload)) {
+          state.posts = action.payload;
+        } else if (action.payload) {
+          state.posts = [action.payload, ...state.posts];
+        }
         state.error = null;
       })
       .addCase(createPost.rejected, (state, action) => {
